@@ -1,0 +1,96 @@
+#!/usr/bin/python
+
+# Copyright 2011 Dananjaya Ramanayake
+
+# Licensed under the Apache License, version 2.0;
+# You may not use this file except in compliance with the License. You may obtain a copy of the Licensae at
+
+# http://www.apache.org/licenses/LICENSE-2.0
+
+# Unless requireb by applicable law or to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either expressed or implied. See the License for the specific Language governing permissions and limitations
+# under the License.
+
+                                           
+'''Command line application to search for Programming language
+
+Tutorials.
+'''
+
+# This program is a highly experimental one. There is lots of features to be added.
+# Currently the program returns the first 10 results only. 
+
+__author__ = 'Dananjaya Ramanayake'
+__version__ = '0.1.3'
+__status__ = 'alpha'
+
+
+from apiclient.discovery import build
+import sys
+import urllib2
+import webbrowser
+
+try:
+	query = sys.argv[1:]
+	string_query = ' '.join(query)
+except IndexError:
+	print 'Please supply a valid argument.'
+	sys.exit(0)
+
+def main():
+	service = build('customsearch','v1', developerKey='AIzaSyDiirbe28_421jRUP-kYfZmmmwEU60XR3A')
+	res = service.cse().list(q=string_query,cx='017576662512468239146:omuauf_lfve',num='10',).execute()
+	
+	for i in range(9):
+		links = res['items'][i]['link']
+		titles = res['items'][i]['title']
+		
+		print '%d.) %s' % (i, titles)
+		print '%s\n\n' % links
+	print 'Press corresponding number to download/view the document.\nOr\nPress Enter to quit.\n'
+	
+	try:
+		
+		file_no = raw_input()
+		down_link = res['items'][int(file_no)]['link']
+		
+		if down_link.endswith('.html') or down_link.endswith('/'):
+			webbrowser.open(down_link)
+		else:
+			file_name = down_link.split('/')[-1]
+			u = urllib2.urlopen(down_link)
+			f = open(file_name, 'w')
+			meta = u.info()
+			file_size = int(meta.getheaders("Content-Length")[0])
+			print "Downloading: %s Bytes: %s" % (file_name,file_size)
+	
+			file_size_d1 = 0
+			block_sz = 8192
+	
+			while True:
+				buffer = u.read(block_sz)
+				if not buffer:
+					break
+			
+				file_size_d1 += block_sz
+				f.write(buffer)
+				status = r"%10d [%3.2f%%]" % (file_size_d1, file_size_d1 * 100. / file_size)
+				status = status + chr(8) * (len(status)+1)
+				print status
+			f.close()
+	except ValueError:
+		sys.exit(0)
+	
+	# Alternative downloading technique at version 0.0.4
+	#try:
+	#	webFile = urllib2.urlopen(down_link)
+	#	localFile = open(down_link.split('/')[-1], 'w')
+	#except urllib2.HTTPError:
+	#	print 'File is not available.'
+	#	sys.exit(0)
+		
+	#localFile.write(webFile.read())
+	#localFile.close()
+		
+if __name__ == '__main__':
+	main()
