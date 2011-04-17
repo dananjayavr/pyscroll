@@ -1,0 +1,35 @@
+pyscroll - The CS Search Engine
+
+pyscroll is a short program written in Python which is aimed at helping Computer Science
+students or for anyone who is interested in learning Computer Science. 
+
+pyscroll employs a custom Google search which will find lecture slides, assignments, questions,
+answers, etc. realted to CS that are hosted mainly in University websites. I'm using Google 
+Custom Search API here to scrape through those areas to find resources related to the 
+search terms you have provided.
+
+For example:
+
+$ python pyscroll python tutorials
+
+That will return 10 results, which will contain resources realted to Python programming.
+Then you can either download them (if the link is a .pdf or .ppt or etc.) or view them through
+your default web browser.
+
+To use pyscroll, you need a Python interpreter version 2.X and also google-api-python-client,
+which can be downloaded and installed from here;
+
+http://code.google.com/p/google-api-python-client/
+
+for free. It's very easy to install the module. Just look at the instructions
+
+http://code.google.com/p/google-api-python-client/wiki/Installation
+
+here.
+
+
+After you satisfied all the dependencies, just download pyscroll and execute it.
+Make sure to supply the search terms you want via command line argument. Like this:
+
+$ python pyscroll <search term>
+
