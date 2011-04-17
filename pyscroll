@@ -21,7 +21,7 @@ Tutorials.
 # Currently the program returns the first 10 results only. 
 
 __author__ = 'Dananjaya Ramanayake'
-__version__ = '0.1.3'
+__version__ = '0.1.4'
 __status__ = 'alpha'
 
 
