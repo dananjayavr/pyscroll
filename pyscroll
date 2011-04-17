@@ -54,7 +54,7 @@ def main():
 		file_no = raw_input()
 		down_link = res['items'][int(file_no)]['link']
 		
-		if down_link.endswith('.html') or down_link.endswith('/'):
+		if down_link.endswith('.html') or down_link.endswith('/') or '.php' in down_link:
 			webbrowser.open(down_link)
 		else:
 			file_name = down_link.split('/')[-1]
